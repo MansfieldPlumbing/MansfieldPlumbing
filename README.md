@@ -24,7 +24,7 @@ RIFE 4.9 frame interpolation on TensorRT. 2x/4x/8x frame rate multiplication at 
 Depth Anything V2 on TensorRT. C# NativeAOT orchestrator with unsafe `Parallel.For` + `LockBits` for real-time CHW tensor transposition. ImageNet normalization baked into the unmanaged C++ inference bridge. No Python at runtime.
 
 **[Demucs_v4_TRT](https://github.com/MansfieldPlumbing/Demucs_v4_TRT)**
-HTDemucs v4 on TensorRT. STFT/ISTFT internalized inside the traced graph to preserve the dual-path time/frequency architecture and achieve full kernel fusion across both branches. ~5 seconds end-to-end on RTX 3090 for a 3-minute track. Published on [HuggingFace](https://huggingface.co/MansfieldPlumbing/Demucs_v4_TRT).
+HTDemucs v4 on TensorRT. STFT/ISTFT internalized inside the traced graph to preserve the dual-path time/frequency architecture and achieve full kernel fusion across both branches. ~5 seconds end-to-end on RTX 3090 for a 3-minute track. No Python at runtime. Published on [HuggingFace](https://huggingface.co/MansfieldPlumbing/Demucs_v4_TRT).
 
 **[v340l-windows-enablement](https://github.com/MansfieldPlumbing/v340l-windows-enablement)**
 Custom KMDF driver and userspace daemon to activate the dual-die AMD Radeon Pro V340L on Windows. The card requires Microsemi Switchtec PCIe fabric initialization and a software SR-IOV mailbox implementation before the GPU silicon responds. No prior Windows activation of this card exists. Hardware validation in progress.
