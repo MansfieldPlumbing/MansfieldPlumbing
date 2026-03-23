@@ -6,86 +6,283 @@
   <title>Mansfield Plumbing — Windows GPU Infrastructure</title>
   <meta name="description" content="Zero-copy GPU IPC, TensorRT pipelines, and exotic hardware enablement on Windows.">
   
-  <!-- Google Search Console Verification -->
-  <!-- PASTE YOUR META TAG HERE AFTER GSC SETUP -->
+  <!-- Google Search Console Verification (add after GSC setup) -->
+  <!-- <meta name="google-site-verification" content="YOUR_TOKEN_HERE"> -->
   
   <style>
-    :root { --bg: #0d1117; --fg: #e6edf3; --muted: #8b949e; --accent: #58a6ff; --border: #30363d; --success: #3fb950; }
+    :root {
+      --bg: #0d1117;
+      --charm-bg: #151515;
+      --fg: #e6edf3;
+      --muted: #8b949e;
+      --accent: #58a6ff;
+      --border: #30363d;
+      --success: #3fb950;
+      --hover-bg: rgba(88, 166, 255, 0.6);
+    }
+    
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--fg); line-height: 1.6; padding: 2rem 1rem; max-width: 900px; margin: 0 auto; }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    header { margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
-    h1 { font-size: 1.9rem; margin-bottom: 0.5rem; font-weight: 700; }
-    .tagline { color: var(--muted); font-size: 1.15rem; margin-bottom: 0.75rem; }
-    .status { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.9rem; background: rgba(63, 185, 80, 0.15); border: 1px solid var(--success); border-radius: 999px; font-size: 0.9rem; color: var(--success); font-weight: 500; }
-    .status::before { content: "●"; font-size: 0.7rem; }
-    .projects { display: grid; gap: 1.25rem; margin-bottom: 2.5rem; }
-    .project { padding: 1.25rem; background: #161b22; border: 1px solid var(--border); border-radius: 8px; transition: border-color 0.2s; }
-    .project:hover { border-color: var(--accent); }
-    .project h3 { margin-bottom: 0.4rem; font-size: 1.2rem; }
-    .project p { color: var(--muted); font-size: 0.95rem; margin-bottom: 0.6rem; }
-    .signal { display: inline-block; padding: 0.2rem 0.6rem; background: rgba(88, 166, 255, 0.15); border: 1px solid var(--accent); border-radius: 4px; font-size: 0.8rem; color: var(--accent); font-weight: 500; }
-    .links { display: flex; flex-wrap: wrap; gap: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.95rem; }
-    .links a { color: var(--accent); }
-    footer { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.9rem; text-align: center; }
-    @media (max-width: 600px) { body { padding: 1rem; } h1 { font-size: 1.6rem; } .project { padding: 1rem; } }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+      display: flex;
+      min-height: 100vh;
+    }
+    
+    /* CHARM BAR SIDEBAR */
+    .charm-bar {
+      width: 85px;
+      background: var(--charm-bg);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px 0;
+      position: fixed;
+      left: 0;
+      top: 0;
+      height: 100vh;
+      z-index: 100;
+    }
+    
+    .charm-btn {
+      width: 85px;
+      height: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: var(--fg);
+      text-decoration: none;
+      transition: background 0.2s ease;
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      font-family: inherit;
+    }
+    
+    .charm-btn:hover {
+      background: var(--hover-bg);
+    }
+    
+    .charm-icon {
+      font-size: 32px;
+      font-family: 'Segoe MDL2 Assets', sans-serif;
+    }
+    
+    .charm-label {
+      font-size: 12px;
+      font-weight: 400;
+      text-align: center;
+    }
+    
+    /* MAIN CONTENT */
+    .main-content {
+      margin-left: 85px;
+      padding: 3rem 2rem;
+      max-width: 900px;
+      width: 100%;
+    }
+    
+    header {
+      margin-bottom: 2.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    
+    h1 {
+      font-size: 1.9rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+    
+    .tagline {
+      color: var(--muted);
+      font-size: 1.15rem;
+      margin-bottom: 0.75rem;
+    }
+    
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.9rem;
+      background: rgba(63, 185, 80, 0.15);
+      border: 1px solid var(--success);
+      border-radius: 999px;
+      font-size: 0.9rem;
+      color: var(--success);
+      font-weight: 500;
+    }
+    
+    .status::before {
+      content: "●";
+      font-size: 0.7rem;
+    }
+    
+    .projects {
+      display: grid;
+      gap: 1.25rem;
+      margin-bottom: 2.5rem;
+    }
+    
+    .project {
+      padding: 1.25rem;
+      background: #161b22;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      transition: border-color 0.2s;
+    }
+    
+    .project:hover {
+      border-color: var(--accent);
+    }
+    
+    .project h3 {
+      margin-bottom: 0.4rem;
+      font-size: 1.2rem;
+    }
+    
+    .project a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+    
+    .project a:hover {
+      text-decoration: underline;
+    }
+    
+    .project p {
+      color: var(--muted);
+      font-size: 0.95rem;
+      margin-bottom: 0.6rem;
+    }
+    
+    .signal {
+      display: inline-block;
+      padding: 0.2rem 0.6rem;
+      background: rgba(88, 166, 255, 0.15);
+      border: 1px solid var(--accent);
+      border-radius: 4px;
+      font-size: 0.8rem;
+      color: var(--accent);
+      font-weight: 500;
+    }
+    
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    
+    .links a {
+      color: var(--accent);
+    }
+    
+    footer {
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+    
+    @media (max-width: 768px) {
+      .charm-bar { display: none; }
+      .main-content { margin-left: 0; padding: 2rem 1rem; }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Mansfield Plumbing — I Fix the Pipes</h1>
-    <p class="tagline">Windows-native GPU plumbing for real-time AI & video. Zero-copy. No Python tax.</p>
-    <span class="status">Open for contracts • Remote/On-site • Jacksonville, FL</span>
-  </header>
+  <!-- CHARM BAR SIDEBAR -->
+  <nav class="charm-bar">
+    <a href="https://github.com/mansfieldplumbing" class="charm-btn" title="My PC (GitHub)">
+      <span class="charm-icon">💻</span>
+      <span class="charm-label">Repos</span>
+    </a>
+    
+    <a href="https://youtube.com/hacktheplanet" class="charm-btn" title="Notifications (YouTube)">
+      <span class="charm-icon">🔔</span>
+      <span class="charm-label">Demos</span>
+    </a>
+    
+    <a href="#top" class="charm-btn" title="Start (Home)">
+      <span class="charm-icon">⊞</span>
+      <span class="charm-label">Start</span>
+    </a>
+    
+    <a href="https://huggingface.co/MansfieldPlumbing" class="charm-btn" title="Store (Hugging Face)">
+      <span class="charm-icon">📦</span>
+      <span class="charm-label">Models</span>
+    </a>
+    
+    <a href="https://x.com/ifixthepipes" class="charm-btn" title="Settings (X/Twitter)">
+      <span class="charm-icon">⚙</span>
+      <span class="charm-label">Signal</span>
+    </a>
+  </nav>
 
-  <main class="projects">
-    <div class="project">
-      <h3><a href="https://github.com/mansfieldplumbing/v340l-windows-enablement">v340l-windows-enablement</a></h3>
-      <p>AMD Radeon Pro V340L MxGPU activation on Windows via Switchtec daemon + KMDF mapper. Turns $50 decommissioned Stadia cards into usable 8GB inference silicon. Primary-source discipline, zero-brick guarantee.</p>
-      <span class="signal">Hardware Enablement</span>
-    </div>
-    
-    <div class="project">
-      <h3><a href="https://github.com/mansfieldplumbing/DirectPort-SDK">DirectPort-SDK</a></h3>
-      <p>Zero-copy inter-process GPU sharing (D3D11/12 ↔ CUDA) via NT handles + hardware fence sync. ~170ns consumer unblock latency. No polling, no copies, just PCIe crossbar speed.</p>
-      <span class="signal">Low-Latency IPC</span>
-    </div>
-    
-    <div class="project">
-      <h3><a href="https://github.com/mansfieldplumbing/RIFE_TRT">RIFE_TRT</a></h3>
-      <p>Native TensorRT frame interpolation. 2x/4x/8x at ~28ms/frame-pair on RTX 3090. C# NativeAOT + async CUDA, Media Foundation decode, zero-copy in-memory pipeline. No Python runtime.</p>
-      <span class="signal">Real-Time Inference</span>
-    </div>
-    
-    <div class="project">
-      <h3><a href="https://github.com/mansfieldplumbing/VirtuaCam">VirtuaCam</a></h3>
-      <p>Modern Media Foundation virtual camera with DirectPort zero-copy broker. Multi-producer compositing, WASAPI loopback, system-registered output. Production-grade, not a hobby plugin.</p>
-      <span class="signal">Virtual Production</span>
-    </div>
-    
-    <div class="project">
-      <h3><a href="https://github.com/mansfieldplumbing/Demucs_v4_TRT">Demucs_v4_TRT</a></h3>
-      <p>HTDemucs v4 on TensorRT. STFT/ISTFT internalized for full kernel fusion. ~5 seconds end-to-end on RTX 3090 for a 3-minute track. Published on Hugging Face.</p>
-      <span class="signal">Audio Separation</span>
-    </div>
-    
-    <div class="project">
-      <h3><a href="https://github.com/mansfieldplumbing/Depth_TRT">Depth_TRT</a></h3>
-      <p>Depth Anything V2 on TensorRT. C# NativeAOT orchestrator with unsafe Parallel.For + LockBits for real-time CHW tensor transposition. ImageNet normalization baked into unmanaged C++ bridge.</p>
-      <span class="signal">Computer Vision</span>
-    </div>
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <header>
+      <h1>Mansfield Plumbing — I Fix the Pipes</h1>
+      <p class="tagline">Windows-native GPU plumbing for real-time AI & video. Zero-copy. No Python tax.</p>
+      <span class="status">Open for contracts • Remote/On-site • Jacksonville, FL</span>
+    </header>
+
+    <section class="projects">
+      <div class="project">
+        <h3><a href="https://github.com/mansfieldplumbing/v340l-windows-enablement">v340l-windows-enablement</a></h3>
+        <p>AMD Radeon Pro V340L MxGPU activation on Windows via Switchtec daemon + KMDF mapper. Turns $50 decommissioned Stadia cards into usable 8GB inference silicon.</p>
+        <span class="signal">Hardware Enablement</span>
+      </div>
+      
+      <div class="project">
+        <h3><a href="https://github.com/mansfieldplumbing/DirectPort-SDK">DirectPort-SDK</a></h3>
+        <p>Zero-copy inter-process GPU sharing (D3D11/12 ↔ CUDA) via NT handles + hardware fence sync. ~170ns consumer unblock latency.</p>
+        <span class="signal">Low-Latency IPC</span>
+      </div>
+      
+      <div class="project">
+        <h3><a href="https://github.com/mansfieldplumbing/RIFE_TRT">RIFE_TRT</a></h3>
+        <p>Native TensorRT frame interpolation. 2x/4x/8x at ~28ms/frame-pair on RTX 3090. C# NativeAOT + async CUDA, no Python runtime.</p>
+        <span class="signal">Real-Time Inference</span>
+      </div>
+      
+      <div class="project">
+        <h3><a href="https://github.com/mansfieldplumbing/VirtuaCam">VirtuaCam</a></h3>
+        <p>Modern Media Foundation virtual camera with DirectPort zero-copy broker. Multi-producer compositing, WASAPI loopback.</p>
+        <span class="signal">Virtual Production</span>
+      </div>
+      
+      <div class="project">
+        <h3><a href="https://github.com/mansfieldplumbing/Demucs_v4_TRT">Demucs_v4_TRT</a></h3>
+        <p>HTDemucs v4 on TensorRT. STFT/ISTFT internalized for full kernel fusion. ~5 seconds end-to-end for a 3-minute track.</p>
+        <span class="signal">Audio Separation</span>
+      </div>
+    </section>
+
+    <footer>
+      <p>Last updated: March 23, 2026</p>
+    </footer>
   </main>
 
-  <div class="links">
-    <div><strong>GitHub:</strong> <a href="https://github.com/mansfieldplumbing">github.com/mansfieldplumbing</a></div>
-    <div><strong>Hugging Face:</strong> <a href="https://huggingface.co/MansfieldPlumbing">huggingface.co/MansfieldPlumbing</a></div>
-    <div><strong>YouTube:</strong> <a href="https://youtube.com/hacktheplanet">youtube.com/hacktheplanet</a></div>
-    <div><strong>X:</strong> <a href="https://x.com/ifixthepipes">@ifixthepipes</a></div>
-  </div>
-
-  <footer>
-    <p>Last updated: March 23, 2026</p>
-  </footer>
+  <script>
+    // Optional: Add hover sound effects or analytics here
+    document.querySelectorAll('.charm-btn').forEach(btn => {
+      btn.addEventListener('mouseenter', () => {
+        // Could add subtle haptic or visual feedback
+      });
+    });
+  </script>
 </body>
 </html>
