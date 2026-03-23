@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mansfield Plumbing — Windows GPU Infrastructure</title>
+  <meta name="description" content="Zero-copy GPU IPC, TensorRT pipelines, and exotic hardware enablement on Windows.">
+  
+  <!-- Google Search Console Verification -->
+  <!-- PASTE YOUR META TAG HERE AFTER GSC SETUP -->
+  
+  <style>
+    :root { --bg: #0d1117; --fg: #e6edf3; --muted: #8b949e; --accent: #58a6ff; --border: #30363d; --success: #3fb950; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--bg); color: var(--fg); line-height: 1.6; padding: 2rem 1rem; max-width: 900px; margin: 0 auto; }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    header { margin-bottom: 2.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid var(--border); }
+    h1 { font-size: 1.9rem; margin-bottom: 0.5rem; font-weight: 700; }
+    .tagline { color: var(--muted); font-size: 1.15rem; margin-bottom: 0.75rem; }
+    .status { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.9rem; background: rgba(63, 185, 80, 0.15); border: 1px solid var(--success); border-radius: 999px; font-size: 0.9rem; color: var(--success); font-weight: 500; }
+    .status::before { content: "●"; font-size: 0.7rem; }
+    .projects { display: grid; gap: 1.25rem; margin-bottom: 2.5rem; }
+    .project { padding: 1.25rem; background: #161b22; border: 1px solid var(--border); border-radius: 8px; transition: border-color 0.2s; }
+    .project:hover { border-color: var(--accent); }
+    .project h3 { margin-bottom: 0.4rem; font-size: 1.2rem; }
+    .project p { color: var(--muted); font-size: 0.95rem; margin-bottom: 0.6rem; }
+    .signal { display: inline-block; padding: 0.2rem 0.6rem; background: rgba(88, 166, 255, 0.15); border: 1px solid var(--accent); border-radius: 4px; font-size: 0.8rem; color: var(--accent); font-weight: 500; }
+    .links { display: flex; flex-wrap: wrap; gap: 1.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.95rem; }
+    .links a { color: var(--accent); }
+    footer { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.9rem; text-align: center; }
+    @media (max-width: 600px) { body { padding: 1rem; } h1 { font-size: 1.6rem; } .project { padding: 1rem; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Mansfield Plumbing — I Fix the Pipes</h1>
+    <p class="tagline">Windows-native GPU plumbing for real-time AI & video. Zero-copy. No Python tax.</p>
+    <span class="status">Open for contracts • Remote/On-site • Jacksonville, FL</span>
+  </header>
+
+  <main class="projects">
+    <div class="project">
+      <h3><a href="https://github.com/mansfieldplumbing/v340l-windows-enablement">v340l-windows-enablement</a></h3>
+      <p>AMD Radeon Pro V340L MxGPU activation on Windows via Switchtec daemon + KMDF mapper. Turns $50 decommissioned Stadia cards into usable 8GB inference silicon. Primary-source discipline, zero-brick guarantee.</p>
+      <span class="signal">Hardware Enablement</span>
+    </div>
+    
+    <div class="project">
+      <h3><a href="https://github.com/mansfieldplumbing/DirectPort-SDK">DirectPort-SDK</a></h3>
+      <p>Zero-copy inter-process GPU sharing (D3D11/12 ↔ CUDA) via NT handles + hardware fence sync. ~170ns consumer unblock latency. No polling, no copies, just PCIe crossbar speed.</p>
+      <span class="signal">Low-Latency IPC</span>
+    </div>
+    
+    <div class="project">
+      <h3><a href="https://github.com/mansfieldplumbing/RIFE_TRT">RIFE_TRT</a></h3>
+      <p>Native TensorRT frame interpolation. 2x/4x/8x at ~28ms/frame-pair on RTX 3090. C# NativeAOT + async CUDA, Media Foundation decode, zero-copy in-memory pipeline. No Python runtime.</p>
+      <span class="signal">Real-Time Inference</span>
+    </div>
+    
+    <div class="project">
+      <h3><a href="https://github.com/mansfieldplumbing/VirtuaCam">VirtuaCam</a></h3>
+      <p>Modern Media Foundation virtual camera with DirectPort zero-copy broker. Multi-producer compositing, WASAPI loopback, system-registered output. Production-grade, not a hobby plugin.</p>
+      <span class="signal">Virtual Production</span>
+    </div>
+    
+    <div class="project">
+      <h3><a href="https://github.com/mansfieldplumbing/Demucs_v4_TRT">Demucs_v4_TRT</a></h3>
+      <p>HTDemucs v4 on TensorRT. STFT/ISTFT internalized for full kernel fusion. ~5 seconds end-to-end on RTX 3090 for a 3-minute track. Published on Hugging Face.</p>
+      <span class="signal">Audio Separation</span>
+    </div>
+    
+    <div class="project">
+      <h3><a href="https://github.com/mansfieldplumbing/Depth_TRT">Depth_TRT</a></h3>
+      <p>Depth Anything V2 on TensorRT. C# NativeAOT orchestrator with unsafe Parallel.For + LockBits for real-time CHW tensor transposition. ImageNet normalization baked into unmanaged C++ bridge.</p>
+      <span class="signal">Computer Vision</span>
+    </div>
+  </main>
+
+  <div class="links">
+    <div><strong>GitHub:</strong> <a href="https://github.com/mansfieldplumbing">github.com/mansfieldplumbing</a></div>
+    <div><strong>Hugging Face:</strong> <a href="https://huggingface.co/MansfieldPlumbing">huggingface.co/MansfieldPlumbing</a></div>
+    <div><strong>YouTube:</strong> <a href="https://youtube.com/hacktheplanet">youtube.com/hacktheplanet</a></div>
+    <div><strong>X:</strong> <a href="https://x.com/ifixthepipes">@ifixthepipes</a></div>
+  </div>
+
+  <footer>
+    <p>Last updated: March 23, 2026</p>
+  </footer>
+</body>
+</html>
