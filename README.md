@@ -1,33 +1,40 @@
-## Focus
+# I fix the pipes.
 
-Windows-native inference infrastructure. The work is about eliminating the overhead between ML models and the hardware they run on — zero-copy memory transports, KMDF drivers, TensorRT engine construction, PCIe fabric management.
+I work at the boundaries between **models, runtimes, operating systems, drivers, and hardware**.
 
-Most of the stack that makes this possible is invisible by design.
+When the existing stack adds copies, scheduler hops, unsupported hardware, unnecessary process boundaries, or an abstraction that prevents the machine from doing what it can actually do, I build the missing piece.
 
----
+Most of that work is invisible when it is working correctly.
 
-## Projects
+## Systems
+
+**[AndroidSMA](https://github.com/MansfieldPlumbing/AndroidSMA)**
+Persistent `System.Management.Automation` hosted in-process as an Android application runtime. PowerShell owns live application state while operating directly on Android objects, Binder IPC, native presentation, and Qualcomm QNN/Hexagon execution. Physical-device work includes 119–120 Hz presentation and QNN graphs executed on SM8550 Hexagon HTP.
 
 **[DirectPort-SDK](https://github.com/MansfieldPlumbing/DirectPort-SDK)**
-NT kernel object-based GPU IPC. Shared VRAM between processes via NT named handles and DX12 fences. Hardware-synchronized push architecture — the producer signals a GPU queue wait, not a CPU semaphore, so the consumer unblocks at PCIe crossbar latency (~170ns) rather than through the OS scheduler (1–15ms). D3D11 lacks the API to resolve NT handle strings directly; the SDK keeps a single D3D12 device alive purely as a name resolver, letting D3D11 own the actual resource. No polling, no copies.
+NT object-based GPU IPC for shared VRAM between processes. D3D12 fences provide hardware synchronization without polling, CPU semaphores, copies, or scheduler-mediated wakeups. A minimal D3D12 device resolves named NT resources while D3D11 remains the resource owner.
 
 **[DirectPort-Legacy](https://github.com/MansfieldPlumbing/DirectPort-Legacy)**
-Adapter layer that converts DirectPort's push model into a pull interface for applications that can't be modified. The transport primitive underneath is unchanged — the adapter absorbs the impedance mismatch at the boundary, not inside the pipeline.
+Compatibility boundary for applications built around pull semantics. The adapter absorbs the impedance mismatch without weakening DirectPort's push transport underneath.
 
 **[VirtuaCam](https://github.com/MansfieldPlumbing/VirtuaCam)**
-Multi-process zero-copy GPU video broker with a Media Foundation COM source. Producer applications share D3D11 textures and fences via NT handles; a central broker multiplexes feeds from multiple producers into a composited output (single source or PIP grid) and delivers frames into the Media Foundation pipeline as a system-registered virtual camera. All inter-process frame transfers stay on the GPU. WASAPI loopback capture included.
+Zero-copy multi-process GPU video broker and Media Foundation virtual-camera source. Producers share D3D11 textures and fences through NT handles; composition and inter-process frame transport remain on the GPU.
 
-**[RIFE_TRT](https://github.com/MansfieldPlumbing/RIFE_TRT)**
-RIFE 4.9 frame interpolation on TensorRT. 2x/4x/8x frame rate multiplication at ~28ms per frame pair on RTX 3090. Zero-copy in-memory pipeline: C# unsafe `Parallel.For` handles real-time CHW transposition from packed RGB, a C++ DLL drives the async CUDA execution context, audio is stream-copied via a single FFmpeg mux pass at the end. No Python at runtime.
-
-**[Depth_TRT](https://github.com/MansfieldPlumbing/Depth_TRT)**
-Depth Anything V2 on TensorRT. C# NativeAOT orchestrator with unsafe `Parallel.For` + `LockBits` for real-time CHW tensor transposition. ImageNet normalization baked into the unmanaged C++ inference bridge. No Python at runtime.
+## Inference
 
 **[Demucs_v4_TRT](https://github.com/MansfieldPlumbing/Demucs_v4_TRT)**
-HTDemucs v4 on TensorRT. STFT/ISTFT internalized inside the traced graph to preserve the dual-path time/frequency architecture and achieve full kernel fusion across both branches. ~5 seconds end-to-end on RTX 3090 for a 3-minute track. No Python at runtime. Published on [HuggingFace](https://huggingface.co/MansfieldPlumbing/Demucs_v4_TRT).
+HTDemucs v4 on TensorRT with STFT/ISTFT internalized into the graph, preserving the dual time/frequency architecture while allowing fusion across the complete inference path. Approximately 5 seconds end-to-end for a 3-minute track on RTX 3090. No Python at runtime.
+
+**[RIFE_TRT](https://github.com/MansfieldPlumbing/RIFE_TRT)**
+RIFE 4.9 frame interpolation on TensorRT. Native C++ CUDA execution with an unsafe C# memory path for real-time tensor layout conversion. 2×/4×/8× interpolation without Python or intermediate frame files.
+
+**[Depth_TRT](https://github.com/MansfieldPlumbing/Depth_TRT)**
+Depth Anything V2 on TensorRT using a NativeAOT C# orchestrator and unmanaged inference bridge. Preprocessing and tensor conversion stay in the native Windows pipeline. No Python at runtime.
+
+## Hardware
 
 **[v340l-windows-enablement](https://github.com/MansfieldPlumbing/v340l-windows-enablement)**
-Custom KMDF driver and userspace daemon to activate the dual-die AMD Radeon Pro V340L on Windows. The card requires Microsemi Switchtec PCIe fabric initialization and a software SR-IOV mailbox implementation before the GPU silicon responds. No prior Windows activation of this card exists. Hardware validation in progress.
+Windows enablement work for the dual-die AMD Radeon Pro V340L. The board requires Switchtec PCIe-fabric initialization and SR-IOV/GFMS control before the GPU silicon becomes usable. Work includes KMDF and userspace control-plane components.
 
 ---
 
