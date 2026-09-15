@@ -1,41 +1,30 @@
-# I fix the pipes.
+# Current work
 
-I work at the boundaries between **models, runtimes, operating systems, drivers, and hardware**.
+**[RyuJitDetach](https://github.com/MansfieldPlumbing/RyuJitDetach)** —
+RyuJIT-compiled method bodies lifted out of the CLR and executed in an AMD64
+PE with no CLR header. Four personalities, each asserting its own exit code.
 
-When the existing stack adds copies, scheduler hops, unsupported hardware, unnecessary process boundaries, or an abstraction that prevents the machine from doing what it can actually do, I build the missing piece.
+**[PSPersistence](https://github.com/MansfieldPlumbing/PSPersistence)** —
+Preserving artifacts of PowerShell's real SMA compiler as reloadable .NET
+assemblies. One proven boundary, stated at the width that passes.
 
-Most of that work is invisible when it is working correctly.
+**[JS2PS](https://github.com/MansfieldPlumbing/JS2PS)** — Measuring the
+grammatical gap between JavaScript source and PowerShell's SMA parser.
+422 of 444 measured nodes admitted on the OGL corpus, pinned and hash-gated.
 
-## Systems
+**[QuickPS](https://github.com/MansfieldPlumbing/QuickPS)** — Win32, DXGI,
+D3D12, WASAPI, and DirectComposition bound directly from PowerShell. No
+wrapper DLL, managed bridge, or renderer framework.
 
-**[AndroidSMA](https://github.com/MansfieldPlumbing/AndroidSMA)**
-Persistent `System.Management.Automation` hosted in-process as an Android application runtime. PowerShell owns live application state while operating directly on Android objects, Binder IPC, native presentation, and Qualcomm QNN/Hexagon execution. Physical-device work includes 119–120 Hz presentation and QNN graphs executed on SM8550 Hexagon HTP.
+**[Terminal](https://github.com/MansfieldPlumbing/Terminal)** — A
+PowerShell-native application environment for Android. CoreCLR and
+`System.Management.Automation` run inside the Android process, with a
+persistent runspace and an Android host emitted from PowerShell-authored CLR
+expression graphs. ARM32 and ARM64.
 
-**[DirectPort-SDK](https://github.com/MansfieldPlumbing/DirectPort-SDK)**
-NT object-based GPU IPC for shared VRAM between processes. D3D12 fences provide hardware synchronization without polling, CPU semaphores, copies, or scheduler-mediated wakeups. A minimal D3D12 device resolves named NT resources while D3D11 remains the resource owner.
+**[Demucs_v4_TRT](https://github.com/MansfieldPlumbing/Demucs_v4_TRT)** —
+Native Demucs v4 with STFT/ISTFT internalized into the graph for end-to-end
+TensorRT inference with no Python in the loop.
 
-**[DirectPort-Legacy](https://github.com/MansfieldPlumbing/DirectPort-Legacy)**
-Compatibility boundary for applications built around pull semantics. The adapter absorbs the impedance mismatch without weakening DirectPort's push transport underneath.
-
-**[VirtuaCam](https://github.com/MansfieldPlumbing/VirtuaCam)**
-Zero-copy multi-process GPU video broker and Media Foundation virtual-camera source. Producers share D3D11 textures and fences through NT handles; composition and inter-process frame transport remain on the GPU.
-
-## Inference
-
-**[Demucs_v4_TRT](https://github.com/MansfieldPlumbing/Demucs_v4_TRT)**
-HTDemucs v4 on TensorRT with STFT/ISTFT internalized into the graph, preserving the dual time/frequency architecture while allowing fusion across the complete inference path. Approximately 5 seconds end-to-end for a 3-minute track on RTX 3090. No Python at runtime.
-
-**[RIFE_TRT](https://github.com/MansfieldPlumbing/RIFE_TRT)**
-RIFE 4.9 frame interpolation on TensorRT. Native C++ CUDA execution with an unsafe C# memory path for real-time tensor layout conversion. 2×/4×/8× interpolation without Python or intermediate frame files.
-
-**[Depth_TRT](https://github.com/MansfieldPlumbing/Depth_TRT)**
-Depth Anything V2 on TensorRT using a NativeAOT C# orchestrator and unmanaged inference bridge. Preprocessing and tensor conversion stay in the native Windows pipeline. No Python at runtime.
-
-## Hardware
-
-**[v340l-windows-enablement](https://github.com/MansfieldPlumbing/v340l-windows-enablement)**
-Windows enablement work for the dual-die AMD Radeon Pro V340L. The board requires Switchtec PCIe-fabric initialization and SR-IOV/GFMS control before the GPU silicon becomes usable. Work includes KMDF and userspace control-plane components.
-
----
-
-[HuggingFace](https://huggingface.co/MansfieldPlumbing) · [YouTube](https://youtube.com/hacktheplanet)
+**[DPX](https://github.com/MansfieldPlumbing/DPX)** — Push-based dataflow
+inference pipeline built from first principles.
