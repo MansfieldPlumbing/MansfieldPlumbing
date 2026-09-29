@@ -5,20 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <title>Mansfield Plumbing</title>
-<meta name="description" content="Current work: Pwsh, Kokoro-Hexagon, V340L-Emancipated, QuickPS and Kinetics.">
+<meta name="description" content="Pwsh, Kokoro-Hexagon, V340L-Emancipated, QuickPS and Kinetics.">
 <style>
-  :root { --bg: #fff; --fg: #1a1a1a; --muted: #555; --rule: #ddd; --link: #0b57d0; }
+  :root { --bg: #fff; --fg: #1a1a1a; --muted: #555; --link: #0b57d0; }
   @media (prefers-color-scheme: dark) {
-    :root { --bg: #111; --fg: #e8e8e8; --muted: #a0a0a0; --rule: #333; --link: #8ab4f8; }
+    :root { --bg: #111; --fg: #e8e8e8; --muted: #a0a0a0; --link: #8ab4f8; }
   }
   body { margin: 0; background: var(--bg); color: var(--fg); font: 1rem/1.55 system-ui, sans-serif; }
-  main { max-width: 42rem; margin: 0 auto; padding: 2rem 1rem 3rem; }
+  main { max-width: 40rem; margin: 0 auto; padding: 2rem 1rem 3rem; }
   h1 { font-size: 1.5rem; margin: 0 0 .25rem; }
-  h2 { font-size: 1.1rem; margin: 2rem 0 .25rem; }
+  h2 { font-size: 1.1rem; margin: 2rem 0 .5rem; }
   p { margin: 0 0 .75rem; }
   a { color: var(--link); }
   nav { color: var(--muted); }
-  section { border-top: 1px solid var(--rule); }
 </style>
 </head>
 <body>
@@ -31,30 +30,15 @@
 
 <h2>Current work</h2>
 
-<section>
-<h2><a href="https://github.com/MansfieldPlumbing/Pwsh">Pwsh</a></h2>
-<p>PowerShell on Android, built by one PowerShell script (<code>setup.ps1</code>) from pinned, hash-verified inputs: no .NET SDK, Android SDK, JDK or MSBuild. The signed APK contains no DEX. <code>NativeActivity</code> loads an emitted native host that starts CoreCLR, serves IL-only assemblies in place from an emitted store, opens a runspace on the main thread and runs <code>Profile.ps1</code>. The 91-assembly payload is proven on the x86_64 emulator, a Galaxy S23 (arm64) and an arm32 device. A console model passes its 63 conformance vectors on all three; it is a probe, not yet the integrated terminal. The command-assembly payload has not passed its device gate.</p>
-</section>
+<p><a href="https://github.com/MansfieldPlumbing/Pwsh">Pwsh</a> — PowerShell on Android: CoreCLR and System.Management.Automation in-process, built by one PowerShell script from pinned, hash-verified inputs.</p>
 
-<section>
-<h2><a href="https://github.com/MansfieldPlumbing/Kokoro-Hexagon">Kokoro-Hexagon</a></h2>
-<p>Kokoro-82M speech on Qualcomm Hexagon, authored in PowerShell. Not yet an end-to-end synthesizer. Done so far: all 548 FP32 tensors extracted from the pinned checkpoint without PyTorch and read back from a managed DLL; a phoneme-contract DLL; a directly emitted V73 HVX kernel test passing on SM8550 and SM8635; and a model-less APK that launches on both devices. The full graph and live speech are not done.</p>
-</section>
+<p><a href="https://github.com/MansfieldPlumbing/Kokoro-Hexagon">Kokoro-Hexagon</a> — Kokoro-82M text-to-speech for Qualcomm Hexagon, authored in PowerShell. In development.</p>
 
-<section>
-<h2><a href="https://github.com/MansfieldPlumbing/V340L-Emancipated">V340L-Emancipated</a></h2>
-<p>No-build PowerShell, DirectML and D3D12 compute for the AMD Radeon Pro V340L on Windows. Verified: DirectML devices and an exact FP16 GEMM on all four dies; a decoded stock ggml <code>GGML_OP_MUL_MAT</code> executed through DirectML on each die by intercepting <code>graph_compute</code>; four in-memory V340 devices registered with stock ggml; bytes moved across adjacent dies through a shared host allocation. Not yet: a complete llama layer or any model throughput measurement.</p>
-</section>
+<p><a href="https://github.com/MansfieldPlumbing/V340L-Emancipated">V340L-Emancipated</a> — DirectML and D3D12 compute for the AMD Radeon Pro V340L on Windows, from PowerShell with no build step.</p>
 
-<section>
-<h2><a href="https://github.com/MansfieldPlumbing/QuickPS">QuickPS</a></h2>
-<p>Win32, DXGI, D3D12, runtime HLSL compilation, DirectComposition, WIC, WASAPI capture, Media Foundation device enumeration, camera matrices and indexed geometry, bound directly from PowerShell. No wrapper DLL, managed bridge or renderer framework. Windows only; MIT licensed.</p>
-</section>
+<p><a href="https://github.com/MansfieldPlumbing/QuickPS">QuickPS</a> — PowerShell bindings for Win32, DXGI, D3D12, DirectComposition, WASAPI and Media Foundation.</p>
 
-<section>
-<h2><a href="https://github.com/MansfieldPlumbing/Kinetics">Kinetics</a></h2>
-<p>An interactive lyric performance for an original track: timed lyrics and choreography become a positioned scene graph and a camera path on a canvas stage, with presentation, karaoke, math, debug and orthographic views. TypeScript, static site, <a href="https://mansfieldplumbing.github.io/kinetics/">live here</a>. The choreography is authored in source; there is no keyframe editor.</p>
-</section>
+<p><a href="https://github.com/MansfieldPlumbing/Kinetics">Kinetics</a> — Audio-synced kinetic typography across a continuous spatial graph. <a href="https://mansfieldplumbing.github.io/kinetics/">Live</a>.</p>
 </main>
 </body>
 </html>
