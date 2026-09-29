@@ -30,15 +30,15 @@
 
 <h2>Current work</h2>
 
-<p><a href="https://github.com/MansfieldPlumbing/Pwsh">Pwsh</a> — Runs PowerShell on Android. One PowerShell script builds the app from pinned, hash-verified inputs, with no .NET SDK, Android SDK or MSBuild. Inside the app, PowerShell runs in-process on CoreCLR.</p>
+<p><a href="https://github.com/MansfieldPlumbing/Pwsh">Pwsh</a> — An Android app that carries CoreCLR and System.Management.Automation, so PowerShell runs in-process on the device and <code>.ps1</code> scripts are the application layer. One PowerShell script builds the signed APK from pinned, hash-verified inputs, with no .NET SDK, Android SDK, JDK or MSBuild. Preview.</p>
 
-<p><a href="https://github.com/MansfieldPlumbing/Kokoro-Hexagon">Kokoro-Hexagon</a> — Kokoro-82M is an open text-to-speech model. This project runs it on Qualcomm's Hexagon DSP, with the code written in PowerShell. In development. Qualcomm's QNN runtime is used only as a reference to check results.</p>
+<p><a href="https://github.com/MansfieldPlumbing/Kokoro-Hexagon">Kokoro-Hexagon</a> — Kokoro-82M text-to-speech on Qualcomm's Hexagon processor, written in PowerShell. PowerShell lowers the model's graph and weights and emits the Hexagon code at build time; the device runs the result. The target is a small model-less Android app plus a separately verified model DLL. In development. QNN, ONNX Runtime and PyTorch serve only as references; none is a build or runtime dependency.</p>
 
-<p><a href="https://github.com/MansfieldPlumbing/V340L-Emancipated">V340L-Emancipated</a> — Machine-learning compute on the AMD Radeon Pro V340L (four GPU dies per card) under Windows, using DirectML and Direct3D 12. It hooks the compute path of stock ggml, the tensor library behind llama.cpp, and is driven from PowerShell with no compiler or build step. In development.</p>
+<p><a href="https://github.com/MansfieldPlumbing/V340L-Emancipated">V340L-Emancipated</a> — LLM inference on AMD Radeon Pro V340L cards under Windows, for owners of these cards. PowerShell intercepts stock llama.cpp/ggml at its compute callback and runs the operations with DirectML and Direct3D 12, one model stage per GPU die. No compiler, build step, ROCm or Vulkan. In development.</p>
 
-<p><a href="https://github.com/MansfieldPlumbing/QuickPS">QuickPS</a> — Small PowerShell building blocks for Windows graphics and native APIs: windows, Direct3D 12 rendering, DirectComposition, audio capture, camera and 3D geometry. They call Windows directly, with no wrapper DLL or renderer framework.</p>
+<p><a href="https://github.com/MansfieldPlumbing/QuickPS">QuickPS</a> — PowerShell scripts that call Windows graphics, audio and window APIs directly: Win32 windows, DXGI, Direct3D 12 with runtime HLSL compilation, DirectComposition, WIC images, WASAPI capture and Media Foundation devices, plus camera matrices and 3D shapes. No wrapper DLL, managed bridge or renderer framework. Windows only. MIT.</p>
 
-<p><a href="https://github.com/MansfieldPlumbing/Kinetics">Kinetics</a> — An interactive lyric performance for an original song, built in TypeScript. The lyrics are laid out across a large 2D space and a camera moves between them in time with the music. <a href="https://mansfieldplumbing.github.io/kinetics/">Live in the browser</a>.</p>
+<p><a href="https://github.com/MansfieldPlumbing/Kinetics">Kinetics</a> — An interactive lyric performance for an original track by Scott Mansfield, built in TypeScript. Timed lyrics become one continuous typographic space: words form spatial lockups and the camera travels between them in time with the audio. <a href="https://mansfieldplumbing.github.io/kinetics/">Live in the browser</a>.</p>
 </main>
 </body>
 </html>
