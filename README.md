@@ -1,30 +1,40 @@
 # Current work
 
-**[RyuJitDetach](https://github.com/MansfieldPlumbing/RyuJitDetach)** —
-RyuJIT-compiled method bodies lifted out of the CLR and executed in an AMD64
-PE with no CLR header. Four personalities, each asserting its own exit code.
+**[Pwsh](https://github.com/MansfieldPlumbing/Pwsh)** — PowerShell on Android,
+built by one PowerShell script (`setup.ps1`) from pinned, hash-verified inputs:
+no .NET SDK, Android SDK, JDK or MSBuild. The signed APK contains no DEX.
+`NativeActivity` loads an emitted native host that starts CoreCLR, serves
+IL-only assemblies in place from an emitted store, opens a runspace on the main
+thread and runs `Profile.ps1`. The 91-assembly payload is proven on the x86_64
+emulator, a Galaxy S23 (arm64) and an arm32 device. A console model passes its
+63 conformance vectors on all three; it is a probe, not yet the integrated
+terminal. The command-assembly payload has not passed its device gate.
 
-**[PSPersistence](https://github.com/MansfieldPlumbing/PSPersistence)** —
-Preserving artifacts of PowerShell's real SMA compiler as reloadable .NET
-assemblies. One proven boundary, stated at the width that passes.
+**[Kokoro-Hexagon](https://github.com/MansfieldPlumbing/Kokoro-Hexagon)** —
+Kokoro-82M speech on Qualcomm Hexagon, authored in PowerShell. Not yet an
+end-to-end synthesizer. Done so far: all 548 FP32 tensors extracted from the
+pinned checkpoint without PyTorch and read back from a managed DLL; a
+phoneme-contract DLL; a directly emitted V73 HVX kernel test passing on SM8550
+and SM8635; and a model-less APK that launches on both devices. The full graph
+and live speech are not done.
 
-**[JS2PS](https://github.com/MansfieldPlumbing/JS2PS)** — Measuring the
-grammatical gap between JavaScript source and PowerShell's SMA parser.
-422 of 444 measured nodes admitted on the OGL corpus, pinned and hash-gated.
+**[V340L-Emancipated](https://github.com/MansfieldPlumbing/V340L-Emancipated)**
+— No-build PowerShell, DirectML and D3D12 compute for the AMD Radeon Pro V340L
+on Windows. Verified: DirectML devices and an exact FP16 GEMM on all four dies;
+a decoded stock ggml `GGML_OP_MUL_MAT` executed through DirectML on each die by
+intercepting `graph_compute`; four in-memory V340 devices registered with stock
+ggml; bytes moved across adjacent dies through a shared host allocation. Not
+yet: a complete llama layer or any model throughput measurement.
 
 **[QuickPS](https://github.com/MansfieldPlumbing/QuickPS)** — Win32, DXGI,
-D3D12, WASAPI, and DirectComposition bound directly from PowerShell. No
-wrapper DLL, managed bridge, or renderer framework.
+D3D12, runtime HLSL compilation, DirectComposition, WIC, WASAPI capture, Media
+Foundation device enumeration, camera matrices and indexed geometry, bound
+directly from PowerShell. No wrapper DLL, managed bridge or renderer framework.
+Windows only; MIT licensed.
 
-**[Terminal](https://github.com/MansfieldPlumbing/Terminal)** — A
-PowerShell-native application environment for Android. CoreCLR and
-`System.Management.Automation` run inside the Android process, with a
-persistent runspace and an Android host emitted from PowerShell-authored CLR
-expression graphs. ARM32 and ARM64.
-
-**[Demucs_v4_TRT](https://github.com/MansfieldPlumbing/Demucs_v4_TRT)** —
-Native Demucs v4 with STFT/ISTFT internalized into the graph for end-to-end
-TensorRT inference with no Python in the loop.
-
-**[DPX](https://github.com/MansfieldPlumbing/DPX)** — Push-based dataflow
-inference pipeline built from first principles.
+**[Kinetics](https://github.com/MansfieldPlumbing/Kinetics)** — An interactive
+lyric performance for an original track: timed lyrics and choreography become a
+positioned scene graph and a camera path on a canvas stage, with presentation,
+karaoke, math, debug and orthographic views. TypeScript, static site,
+[live here](https://mansfieldplumbing.github.io/kinetics/). The choreography is
+authored in source; there is no keyframe editor.
