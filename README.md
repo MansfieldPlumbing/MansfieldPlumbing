@@ -14,11 +14,16 @@ model-less Android app plus a separately verified model DLL. In development.
 QNN, ONNX Runtime and PyTorch serve only as references; none is a build or
 runtime dependency.
 
-**[V340L-Emancipated](https://github.com/MansfieldPlumbing/V340L-Emancipated)**
-— LLM inference on AMD Radeon Pro V340L cards under Windows, for owners of
-these cards. PowerShell intercepts stock llama.cpp/ggml at its compute callback
-and runs the operations with DirectML and Direct3D 12, one model stage per GPU
-die. No compiler, build step, ROCm or Vulkan. In development.
+**[V340L-Enablement](https://github.com/MansfieldPlumbing/V340L-Enablement)** —
+Windows enablement and verification for AMD Radeon Pro V340L cards: driver
+package preparation, adapter discovery, DirectML operator probes and recorded
+measurements. It also holds the postmortem of the closed multi-die llama.cpp
+experiment.
+
+**[DirectAI](https://github.com/MansfieldPlumbing/DirectAI)** — A Windows
+ONNX Runtime/DirectML inference runtime with plugin, HTTP, named-pipe and CLI
+hosts that PowerShell can load directly. Runs SD1.5 LCM with whole model stages
+placed on separate GPUs. In development.
 
 **[QuickPS](https://github.com/MansfieldPlumbing/QuickPS)** — PowerShell
 scripts that call Windows graphics, audio and window APIs directly: Win32
